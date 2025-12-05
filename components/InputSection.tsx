@@ -29,7 +29,7 @@ export const InputSection: React.FC<InputSectionProps> = ({
           ? 'text-3xl md:text-4xl'
           : 'text-5xl md:text-7xl lg:text-8xl'
       }`}>
-        TONIGHT'S SKY
+        TONIGHT SKY
       </h1>
 
       {/* Subtitle */}

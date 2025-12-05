@@ -66,7 +66,7 @@ export const SkyCard: React.FC<SkyCardProps> = ({ data, index }) => {
         </div>
       </div>
 
-      {/* Direction and Best Time */}
+      {/* Direction and Best Time - aligned horizontally */}
       <div className="grid grid-cols-2 gap-4 mb-4 pb-4 border-b border-slate-800/50">
         <div>
           <div className="text-[10px] tracking-[0.2em] text-slate-500 uppercase mb-1">
@@ -76,7 +76,7 @@ export const SkyCard: React.FC<SkyCardProps> = ({ data, index }) => {
             {data.direction}
           </div>
         </div>
-        <div>
+        <div className="text-right">
           <div className="text-[10px] tracking-[0.2em] text-slate-500 uppercase mb-1">
             Best Time
           </div>

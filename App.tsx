@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StarryBackground } from './components/StarryBackground';
 import { InputSection } from './components/InputSection';
 import { SkyCard } from './components/SkyCard';
@@ -15,6 +15,22 @@ const App: React.FC = () => {
   const [summary, setSummary] = useState<string>('');
   const [hasSearched, setHasSearched] = useState(false);
   const [searchedCity, setSearchedCity] = useState('');
+  const [timezone, setTimezone] = useState<string>('');
+  const [localTime, setLocalTime] = useState<string>('');
+
+  // Reset to default state when city input is cleared
+  useEffect(() => {
+    if (city.trim() === '') {
+      setError(null);
+      setSkyObjects([]);
+      setCoords(null);
+      setSummary('');
+      setHasSearched(false);
+      setSearchedCity('');
+      setTimezone('');
+      setLocalTime('');
+    }
+  }, [city]);
 
   const handleSearch = async () => {
     if (!city.trim()) return;
@@ -34,6 +50,8 @@ const App: React.FC = () => {
       // Extract coordinates and objects
       setCoords({ lat: response.lat, lon: response.lon });
       setSkyObjects(response.objects);
+      setTimezone(response.timezone || '');
+      setLocalTime(response.localTime || '');
 
       // Generate summary from objects
       const generatedSummary = generateSummary(response.objects);
@@ -71,12 +89,6 @@ const App: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
               <p className="text-red-400 text-sm tracking-wide">{error}</p>
-              <button
-                onClick={handleSearch}
-                className="mt-2 px-6 py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 text-red-300 rounded-lg text-sm font-medium transition-all duration-200"
-              >
-                Try Again
-              </button>
             </div>
           </div>
         )}
@@ -91,6 +103,13 @@ const App: React.FC = () => {
                   <h2 className="text-2xl md:text-3xl text-white font-light">
                     Observing from <span className="text-cyan-400 font-medium">{searchedCity}</span>
                   </h2>
+                  {localTime && timezone && (
+                    <div className="text-xs md:text-sm text-slate-500 tracking-wider">
+                      Local Time: <span className="text-slate-400 font-medium">{localTime}</span>
+                      {' • '}
+                      <span className="text-slate-400">{timezone}</span>
+                    </div>
+                  )}
                   <p className="text-slate-400 italic font-light max-w-2xl mx-auto leading-relaxed">
                     "{summary || 'Calibrating instruments for observation...'}"
                   </p>

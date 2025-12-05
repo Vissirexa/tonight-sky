@@ -18,6 +18,8 @@ export interface SkyDataAPIResponse {
   lon: number;
   city: string;
   objects: SkyObject[];
+  timezone?: string;
+  localTime?: string;
 }
 
 export interface SimulationState {
