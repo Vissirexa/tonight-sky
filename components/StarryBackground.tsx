@@ -40,7 +40,36 @@ export const StarryBackground: React.FC = () => {
     { size: 2.5, bottom: '90px', right: '45px', opacity: 0.8, delay: 1.9 },
   ];
 
-  const allStars = [...topLeftStars, ...topRightStars, ...bottomLeftStars, ...bottomRightStars];
+  // Add more sparse stars across the page
+  const sparseStars: Star[] = [
+    // Top section
+    { size: 1, top: '15%', left: '20%', opacity: 0.3, delay: 2 },
+    { size: 1.5, top: '8%', left: '35%', opacity: 0.4, delay: 2.3 },
+    { size: 1, top: '12%', left: '65%', opacity: 0.3, delay: 2.6 },
+    { size: 1.5, top: '18%', left: '85%', opacity: 0.5, delay: 2.9 },
+
+    // Middle section
+    { size: 1, top: '35%', left: '10%', opacity: 0.3, delay: 3.2 },
+    { size: 1, top: '40%', left: '25%', opacity: 0.4, delay: 3.5 },
+    { size: 1.5, top: '45%', left: '50%', opacity: 0.3, delay: 3.8 },
+    { size: 1, top: '38%', left: '75%', opacity: 0.4, delay: 4.1 },
+    { size: 1, top: '42%', left: '90%', opacity: 0.3, delay: 4.4 },
+
+    // Lower middle section
+    { size: 1.5, top: '60%', left: '15%', opacity: 0.4, delay: 4.7 },
+    { size: 1, top: '65%', left: '30%', opacity: 0.3, delay: 5 },
+    { size: 1, top: '58%', left: '55%', opacity: 0.3, delay: 5.3 },
+    { size: 1.5, top: '68%', left: '70%', opacity: 0.4, delay: 5.6 },
+    { size: 1, top: '62%', left: '88%', opacity: 0.3, delay: 5.9 },
+
+    // Lower section
+    { size: 1, top: '80%', left: '18%', opacity: 0.3, delay: 6.2 },
+    { size: 1, top: '85%', left: '42%', opacity: 0.4, delay: 6.5 },
+    { size: 1.5, top: '82%', left: '60%', opacity: 0.3, delay: 6.8 },
+    { size: 1, top: '88%', left: '80%', opacity: 0.3, delay: 7.1 },
+  ];
+
+  const allStars = [...topLeftStars, ...topRightStars, ...bottomLeftStars, ...bottomRightStars, ...sparseStars];
 
   return (
     <>

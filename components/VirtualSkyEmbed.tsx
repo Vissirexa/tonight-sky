@@ -6,10 +6,10 @@ interface VirtualSkyEmbedProps {
   city: string;
 }
 
-// Declare VirtualSky on window object
+// Declare stuQuery (S) and VirtualSky on window object
 declare global {
   interface Window {
-    VirtualSky: any;
+    S: any;
   }
 }
 
@@ -24,8 +24,8 @@ export const VirtualSkyEmbed: React.FC<VirtualSkyEmbedProps> = ({
   const virtualSkyInstance = useRef<any>(null);
 
   useEffect(() => {
-    // Check if VirtualSky is available
-    if (typeof window.VirtualSky === 'undefined') {
+    // Check if stuQuery (S) and VirtualSky are available
+    if (typeof window.S === 'undefined' || typeof window.S.virtualsky === 'undefined') {
       setError('VirtualSky library not loaded');
       setLoading(false);
       return;
@@ -40,29 +40,35 @@ export const VirtualSkyEmbed: React.FC<VirtualSkyEmbedProps> = ({
         containerRef.current.innerHTML = '';
       }
 
-      // Initialize VirtualSky
-      virtualSkyInstance.current = window.VirtualSky({
-        id: containerRef.current,
-        projection: 'stereo', // Stereographic projection for natural look
+      // Set a unique ID for the container
+      const containerId = 'virtualsky-container';
+      containerRef.current.id = containerId;
+
+      // Initialize VirtualSky using stuQuery (S) with minimal config
+      virtualSkyInstance.current = window.S.virtualsky({
+        id: containerId,
+        projection: 'stereo',
         latitude: latitude,
         longitude: longitude,
-        clock: new Date(), // Current time
+        constellations: true,
+        constellationlabels: true,
         showstarlabels: true,
         showplanets: true,
         showplanetlabels: true,
-        showconstellations: true,
-        showconstellationlabels: true,
-        showdate: false,
-        showposition: false,
         ground: true,
-        gradient: true,
         cardinalpoints: true,
-        az: 180, // Looking south by default
-        live: true, // Update in real-time
-        transparent: false,
-        keyboard: false, // Disable keyboard controls for embedded view
-        mouse: true, // Allow mouse interaction
+        keyboard: false,
+        mouse: true,
       });
+
+      // Call resize after a short delay to ensure container has dimensions
+      setTimeout(() => {
+        if (virtualSkyInstance.current && containerRef.current) {
+          const width = containerRef.current.offsetWidth;
+          const height = containerRef.current.offsetHeight;
+          virtualSkyInstance.current.resize(width, height);
+        }
+      }, 100);
 
       setLoading(false);
       setError(null);
@@ -83,13 +89,6 @@ export const VirtualSkyEmbed: React.FC<VirtualSkyEmbedProps> = ({
 
   return (
     <div className="w-full relative rounded-2xl overflow-hidden border border-slate-800 bg-[#0b0d14] shadow-2xl aspect-video md:aspect-[21/9]">
-      {/* Live Indicator */}
-      <div className="absolute top-6 left-6 z-20 flex items-center gap-2">
-        <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_2px_rgba(239,68,68,0.5)]"></div>
-        <span className="text-[10px] font-bold tracking-[0.2em] text-slate-300 uppercase">
-          Simulated Feed
-        </span>
-      </div>
 
       {/* VirtualSky Container */}
       <div className="absolute inset-0 flex items-center justify-center bg-[#050608]">
